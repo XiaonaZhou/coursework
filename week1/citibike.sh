@@ -38,7 +38,7 @@ cut -d, -f15 201402-citibike-tripdata.csv |sort | uniq -c |sort -n
 
 # count the number of trips that start on cross streets that both contain numbers (e.g., "1 Ave & E 15 St", "E 39 St & 2 Ave", ...)
 echo '8. count the number of trips that start on cross streets that both contain numbers'
-cut -d, -f5 201402-citibike-tripdata.csv | grep '.*[0-9].* & .*[0-9].*'| wc
+cut -d, -f5 201402-citibike-tripdata.csv | grep '.*[0-9].* & .*[0-9].*'| wc -l
 
 # compute the average trip duration
 echo '9. compute the average trip duration'
