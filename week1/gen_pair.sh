@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#echo "Enter Seed"
-#read SEED
 SEED=`date +%N|sed s/...$//`
 echo $SEED
 # r1 is a random number between 1 and 28
@@ -34,8 +32,7 @@ p3=$(($(awk 'NR=='$r3'{print $1}' pairs3.txt)))
 
 
 p4=$(($(grep [$p3] -v  pairs3.txt)))
-echo "random"
-echo $r1 $r2 $r3
+
 echo "pairs"
 echo $p1 $p2 $p3 $p4
 
