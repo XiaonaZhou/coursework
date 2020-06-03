@@ -23,13 +23,20 @@ trips <- mutate(trips, gender = factor(gender, levels=c(0,1,2), labels = c("Unkn
 ########################################
 
 # count the number of trips (= rows in the data frame)
+
+# Method 1
 nrow(trips)
+
+#Method 2
+
+trips %>% 
+  summarise(count = n())
 
 # find the earliest and latest birth years (see help for max and min to deal with NAs)
 trips %>% 
   filter(birth_year!="\\N") %>% 
-  summarise(min_birth_year = min(birth_year),
-            max_birth_year = max(birth_year))
+  summarise(min_birth_year = min(birth_year, na.rm = T),
+            max_birth_year = max(birth_year, na.rm = T))
   
 
 # use filter and grepl to find all trips that either start or end on broadway
@@ -72,8 +79,10 @@ trips %>%
   group_by(station_to_station) %>%
   summarize(count = n()) %>%
   arrange(desc(count)) %>%
-  mutate(station_rank = row_number()) %>%
-  filter(station_rank <= 10)
+  slice(1:10) #use slice or the following
+
+  #mutate(station_rank = row_number()) %>%
+  #filter(station_rank <= 10)
 
 # find the top 3 end stations for trips starting from each start station
 trips %>%
