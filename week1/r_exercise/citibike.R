@@ -86,11 +86,12 @@ trips %>%
 
 # find the top 3 end stations for trips starting from each start station
 trips %>%
-  group_by(start_station_name, end_station_name) %>%
+  group_by(start_station_name,end_station_name) %>%
   summarize(count = n()) %>%
   arrange(desc(count)) %>%
-  mutate(station_rank = row_number()) %>%
-  filter(station_rank <= 3)
+  slice(1:3)#or if want to see the rank use the following instead
+  #mutate(station_rank = row_number()) %>%
+  #filter(station_rank <= 3)
 
 
 # find the top 3 most common station-to-station trips by gender
@@ -110,8 +111,7 @@ trips %>%
   mutate(trip_day = floor_date(starttime,'day')) %>% 
   group_by(trip_day) %>%
   summarize(count = n()) %>%
-  arrange(desc(count)) %>%
-  
+  arrange(desc(count))%>%
   slice(1)#or if want to see the rank use the following instead
 
   #mutate(station_rank = row_number()) %>%
@@ -119,6 +119,14 @@ trips %>%
 
 
 # compute the average number of trips taken during each of the 24 hours of the day across the entire month
+trips %>% 
+  mutate(trip_hour = hour(floor_date(trips$starttime,"hour"))) %>% 
+  group_by(trip_hour) %>%
+  summarize(count = n(),
+    aver_num = count/28) %>% 
+  arrange(desc(aver_num))
+
+
 # what time(s) of day tend to be peak hour(s)?
 
 trips %>% 
@@ -129,3 +137,10 @@ trips %>%
   slice(1) # peak hour at round 5:00 pm
 
 
+trips %>%
+  mutate(hourTime = hour(round_date(starttime, 'hour'))) %>%
+  group_by(hourTime) %>% 
+  summarise(count = n(), 
+            aver_num = count/28) %>% 
+  arrange(desc(aver_num))
+    
