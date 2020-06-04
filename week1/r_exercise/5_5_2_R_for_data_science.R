@@ -27,11 +27,9 @@ flights %>%
 flights %>% 
   mutate(dep_time_in_minutes = (dep_time %/% 100)*60 + dep_time %% 100,
          arr_time_in_minutes = (arr_time %/% 100)*60 + arr_time %% 100,
-         sched_dep_time_in_mint = (sched_dep_time %/% 100)*60 + sched_dep_time %% 100,
-         sched_arr_time_in_mint = (sched_arr_time %/% 100)*60 + sched_arr_time %% 100,
-         diff_arr_dep = arr_time_in_minutes - dep_time_in_minutes,
-         diff_sched_arr_dep = sched_arr_time_in_mint - sched_dep_time_in_mint) %>% 
-  select(diff_arr_dep, diff_sched_arr_dep, air_time)
+         diff_arr_dep = arr_time_in_minutes - dep_time_in_minutes) %>% 
+  filter(diff_arr_dep == air_time) %>% 
+  select(diff_arr_dep,air_time)
 
 # However, they are still not the same
 
