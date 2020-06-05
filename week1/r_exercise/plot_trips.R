@@ -92,6 +92,15 @@ trips %>%
   geom_point()
 
 
+
+#use ymd
+
+trips %>%
+  group_by(ymd) %>% 
+  summarise(trip_num = n()) %>% 
+  ggplot(aes(x=ymd, y = trip_num))+
+  geom_point()
+
 # plot the total number of trips (on the y axis) by age (on the x axis) and gender (indicated with color)
 trips %>% 
   filter(! is.na(birth_year)) %>% 
@@ -107,6 +116,16 @@ trips %>%
 # plot the ratio of male to female trips (on the y axis) by age (on the x axis)
 # hint: use the spread() function to reshape things to make it easier to compute this ratio
 # (you can skip this and come back to it tomorrow if we haven't covered spread() yet)
+
+trips %>% 
+  filter(! is.na(birth_year)) %>% 
+  mutate( age = 2014 - birth_year) %>% 
+  group_by(age,gender) %>% 
+  summarise(trip_num = n()) %>% 
+  pivot_wider(names_from = gender, values_from = trip_num) %>% 
+  mutate(ratio = Male/Female) %>% 
+  ggplot(aes(x=age, y =ratio)) + 
+  geom_point()
 
 ########################################
 # plot weather data
@@ -132,6 +151,7 @@ weather %>%
 ########################################
 
 # join trips and weather
+
 trips_with_weather <- inner_join(trips, weather, by="ymd")
 
 # plot the number of trips as a function of the minimum temperature, where each point represents a day
@@ -166,20 +186,89 @@ trips_with_weather %>%
   geom_point()+
   geom_smooth()
 
+
+
+
 # compute the average number of trips and standard deviation in number of trips by hour of the day
 # hint: use the hour() function from the lubridate package
 
-# trips %>% 
-#   mutate(hours = hour(starttime), day = floor_date(starttime,'day')) %>% 
-#   group_by(day, hours) %>% 
-#   summarise(count_d = n(),
-#             count_h = n(hour),
-#             mean_num =count_h/count_d ) %>% 
-#   select(count_d, count_h,mean_num)
+
+trips %>%
+  mutate(hour = hour(starttime)) %>%
+  group_by(ymd, hour) %>%
+  summarise(count = n()) %>%
+  group_by(hour) %>%
+  summarise(mean_trip_hour = mean(count),
+            sd_trip_hour = sd(count)) %>%
+  gather(stats,value, mean_trip_hour, sd_trip_hour) %>%
+  ggplot(aes(x=hour, y=value, colour=stats)) +
+  geom_line()+
+  geom_point()+
+  xlab("hour") +
+  ylab("number of trips") +
+  labs(title = "mean and standard deviation of number of trips by day")
 
 
 
-# plot the above
+
+
+# # This was my first attempt
+# reshape_trips <-trips %>% 
+#   mutate(hour = hour(starttime)) %>% 
+#   group_by(ymd, hour) %>% 
+#     summarise(count = n()) %>% pivot_wider(names_from = ymd, values_from = count)
+# 
+# 
+# mean_sd <- data.frame()
+# for (i in 1:24){
+#   mean_sd[i,1] <- mean(as.numeric(reshape_trips[i,-1]),na.rm = T)
+#   mean_sd[i,2] <- sd(as.numeric(reshape_trips[i,-1]),na.rm = T)
+# 
+# }
+# names(mean_sd)[1] <- "mean_trips"
+# names(mean_sd)[2] <- "sd_trips"
+# 
+# 
+# mean_sd$hour <- reshape_trips$hour
+# 
+# # plot the above
+# ggplot(mean_sd, aes(x = hour, y = mean_trips)) +
+#   geom_point()
+# ggplot(mean_sd, aes(x = hour, y = sd_trips)) +
+#   geom_point()
+# 
+# mean_sd %>%
+#   gather(stats,value, mean_trips, sd_trips) %>%
+#   ggplot(aes(x=hour, y=value, colour=stats)) +
+#   geom_line()+
+#   geom_point()+
+#   xlab("hour") +
+#   ylab("number of trips") +
+#   labs(title = "mean and standard deviation of number of trips by day")
+
+
+
+
+
+
 
 # repeat this, but now split the results by day of the week (Monday, Tuesday, ...) or weekday vs. weekend days
 # hint: use the wday() function from the lubridate package
+
+trips %>% 
+  mutate(weekday = weekdays(as.POSIXct(starttime), abbreviate = T)) %>% 
+  group_by(ymd, weekday) %>% 
+  summarise(count = n()) %>% 
+  group_by(weekday) %>% 
+  summarise(mean_trip_week = mean(count),
+            sd_trip_week = sd(count)) %>% 
+  gather(stats,value, mean_trip_week, sd_trip_week) %>%
+  ggplot(aes(x=weekday, y=value, colour=stats)) +
+  geom_line()+
+  geom_point()+
+  #coord_flip()+
+  xlab("weekday") +
+  ylab("number of trips") +
+  labs(title = "mean and standard deviation of number of trips by weekdays")
+  
+  
