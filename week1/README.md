@@ -2,7 +2,7 @@ This week covers:
 
   * An intro to Git and Github for sharing code
   * Command line tools
-  * Exploratory data analysis with R
+  * R and the Tidyverse
 
 # Day 1
 
@@ -67,11 +67,13 @@ Install tools: [Ubuntu on Windows](https://msdn.microsoft.com/en-us/commandline/
   * A full hour-long [introductory video](https://www.youtube.com/watch?v=U8GBXvdmHT4)
   * More resources from GitHub available [here](https://services.github.com/resources/) and [here](https://help.github.com/articles/good-resources-for-learning-git-and-github/)
   * And here's a handy [cheatsheet](https://services.github.com/on-demand/downloads/github-git-cheat-sheet/)
+
+# Day 2
   
 ## Intro to the Command Line
-  * See the [intro to the command line](intro_command_line.ipynb) notebook we discussed together
+  * See this [intro to the command line](intro_command_line.ipynb) notebook 
   * Read through [Lifehacker's command line primer](http://lifehacker.com/5633909/who-needs-a-mouse-learn-to-use-the-command-line-for-almost-anything)
-  * Do Codecademy's interactive [command line tutorial](https://www.codecademy.com/learn/learn-the-command-line)
+  * See [Linux Journey's shell lesson](https://linuxjourney.com/lesson/the-shell)
 
 ### Learn more (optional)
   * See this [crash course](https://learnpythonthehardway.org/book/appendixa.html) for more details on commonly used commands
@@ -79,11 +81,7 @@ Install tools: [Ubuntu on Windows](https://msdn.microsoft.com/en-us/commandline/
   * Review this wikibook on [data analysis on the command line](http://en.wikibooks.org/wiki/Ad_Hoc_Data_Analysis_From_The_Unix_Command_Line), covering ``cut``, ``grep``, ``wc``, ``uniq``, ``sort``, etc
   * Learn [awk in 20 minutes](http://ferd.ca/awk-in-20-minutes.html)
   * Check out some more advanced tools for [Data Science at the Command Line](http://datascienceatthecommandline.com)
-
-# Day 2
-
-## Counting
-
+  * Do Codecademy's interactive [command line tutorial](https://www.codecademy.com/learn/learn-the-command-line) (the free portion)
   * See these [Introduction to Counting](https://speakerdeck.com/jhofman/modeling-social-data-lecture-2-introduction-to-counting) slides
 
 ## Command line exercises
@@ -98,9 +96,17 @@ Install tools: [Ubuntu on Windows](https://msdn.microsoft.com/en-us/commandline/
   	2. `git pull upstream master` to grab changes from this repository, and resolve any merge conflicts, commiting the final results.
   	3. `git push origin master` to push things back up to your GitHub fork of the course repository.
 
+
 ## Extra
   * Think about how to write a `musical_pairs.sh` script to determine your programming partner each day
+ 
+<!--
+
+## Counting
+
   * Take a look at [The Anatomy of the Long Tail](https://5harad.com/papers/long_tail.pdf) and think about how to generate Figures 1 and 2
+
+-->
 
 
 # Day 3
@@ -109,23 +115,28 @@ Install tools: [Ubuntu on Windows](https://msdn.microsoft.com/en-us/commandline/
 
   * See the [Data Wrangling in R](https://speakerdeck.com/jhofman/modeling-social-data-lecture-3-data-manipulation-in-r) slides
   * Review [intro_to_r.ipynb](intro_to_r.ipynb) for an introduction to R
-  * Have a look at [Codecademy's introduction to R](https://www.codecademy.com/learn/learn-r)
-  * Read chapters 2 and 3 of [R for Data Science](http://r4ds.had.co.nz)
+  * Do the free portion of [Codecademy's introduction to R](https://www.codecademy.com/learn/learn-r), chapters 1, 2, and 3
+  * See chapters 1, 2, and 4 of [R for Data Science](http://r4ds.had.co.nz) for background on using R and Rstudio (chapter numbers correspond to the online edition)
+<!--   * Read chapters 2 and 3 of [R for Data Science](http://r4ds.had.co.nz) -->
 
 ## R counting exercises
-  * Use the [musical pairs script](students/musical_pairs.sh) we wrote together yesterday to determine your programming partner each day
+  * Use the [musical pairs script](students/musical_pairs.sh) to determine your programming partner each day
   * Fill in solutions to the counting exercises under each comment in [citibike.R](citibike.R)
+  * Read chapter 5 of [R for Data Science](http://r4ds.had.co.nz) and do the following exercises:
+    * Section [5.2.4](https://r4ds.had.co.nz/transform.html#exercises-8), exercises 1 and 3
+    * Section [5.5.2](https://r4ds.had.co.nz/transform.html#exercises-11), exercise 2
+    * Section [5.7.1](https://r4ds.had.co.nz/transform.html#exercises-13), exercise 3
 
 ## Learn more
   * References:
     * [Basic types](http://www.r-tutor.com/r-introduction/basic-data-types): (numeric, character, logical, factor)
     * Vectors, lists, dataframes: a [one page reference](http://www.statmethods.net/input/datatypes.html) and [more details](https://en.wikibooks.org/wiki/R_Programming/Data_types)
 	* [Cyclismo's](http://www.cyclismo.org/tutorial/R/index.html) more extensive tutorial
-    * Hadley Wickham's [style guide](http://adv-r.had.co.nz/Style.html)
+	* Rstudio's [data wrangling cheatsheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+	* The [tidyverse style guide](https://style.tidyverse.org)
+	* Hadley Wickham's [style guide](http://adv-r.had.co.nz/Style.html)
 	* The [dplyr vignette](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html)
 	* Sean Anderson's [dplyr and pipes examples](http://seananderson.ca/2014/09/13/dplyr-intro.html) ([code](https://github.com/seananderson/dplyr-intro-2014) on github)
-	* Rstudio's [data wrangling cheatsheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
-	* The [tidyverse style guide]
 
   * Tutorials:
   	* [DataCamp's introduction to R](http://datacamp.com/courses/free-introduction-to-r) tutorials (or Hadley's [Advanced R](http://adv-r.had.co.nz) if you're a pro)
@@ -139,12 +150,17 @@ Install tools: [Ubuntu on Windows](https://msdn.microsoft.com/en-us/commandline/
 
   * See the [Data visualization](https://speakerdeck.com/jhofman/modeling-social-data-lecture-4-data-visualization) slides
   * Review [visualization_with_ggplot2.ipynb](visualization_with_ggplot2.ipynb) for an introduction to data visualization with ggplot2
-  * Read chapter 1 of [R for Data Science](http://r4ds.had.co.nz)
 
 ## Plotting exercises   
-  * Use the `download_trips.sh` script to grab all trip data from 2014
-  * Run the [load_trips.R](load_trips.R) file to generate `trips.RData`
-  * Write code in [plot_trips.R](plot_trips.R) to reproduce and extend the visualizations we made this morning using `trips.RData`
+  * Read chapter 3 of the online edition of [R for Data Science](http://r4ds.had.co.nz) and do the following exercises:
+    * Section [3.3.1](https://r4ds.had.co.nz/data-visualisation.html#exercises-1), exercises 1, 2, and 3
+    * Section [3.5.1](https://r4ds.had.co.nz/data-visualisation.html#exercises-2), exercises 1 and 4
+    * Section [3.6.1](https://r4ds.had.co.nz/data-visualisation.html#exercises-3), exercises 5 and 6
+    * Section [3.8.1](https://r4ds.had.co.nz/data-visualisation.html#exercises-5), exercises 1 and 2
+  * Citibike plots
+    * Modify and use the `download_trips.sh` script to grab all months of trip data from 2014
+    * Run the [load_trips.R](load_trips.R) file to generate `trips.RData`
+    * Write code in [plot_trips.R](plot_trips.R) to create visualizations using `trips.RData`
 
 ## Learn more
   * Tutorials:
@@ -155,3 +171,30 @@ Install tools: [Ubuntu on Windows](https://msdn.microsoft.com/en-us/commandline/
     * The [R Graphics Cookbook](http://www.cookbook-r.com/Graphs/)
     * The [official ggplot2 docs](http://docs.ggplot2.org/current/)
     * Videos on [Visualizing Data with ggplot2](http://varianceexplained.org/RData/lessons/lesson2/)
+
+# Day 5
+
+## Combining and reshaping data
+  * Review [combine_and_reshape_in_r.ipynb](combine_and_reshape_in_r.ipynb) on joins with dplyr and reshaping with tidyr
+
+## Plotting exercises
+  * Finish up the Citibike plotting exercises in [plot_trips.R](plot_trips.R), including the plots that involve reshaping data
+
+## Combining and reshaping exercises
+  * Read chapters 12 and 13 of [R for Data Science](http://r4ds.had.co.nz) on tidyr and joins
+  * Do the following exercises from [R for Data Science](http://r4ds.had.co.nz):
+    * Section [12.2.1](https://r4ds.had.co.nz/tidy-data.html#exercises-23), exercise 2
+    * Section [12.3.3](https://r4ds.had.co.nz/tidy-data.html#exercises-24) exercises 1 and 3 
+  * Do part 1 of Datacamp's [Cleaning Data in R](https://www.datacamp.com/courses/cleaning-data-in-r) tutorial
+  * Additional references:
+    * The tidyr [vignette on tidy data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
+    * The dplyr [vignette on two-table verbs](https://cran.r-project.org/web/packages/dplyr/vignettes/two-table.html) for joins
+    * A [visual guide to joins](http://blog.codinghorror.com/a-visual-explanation-of-sql-joins/)
+
+## Rmarkdown
+
+  * Read Chapter 27 of [R for Data Science](http://r4ds.had.co.nz) on Rmarkdown
+  * Do the following exercises:
+    * Section [27.2.1](https://r4ds.had.co.nz/r-markdown.html#exercises-71), exercises 1 and 2 (try keyboard shortcuts: ctrl-shift-enter to run chunks, and ctrl-shift-k to knit the document)
+    * Section [27.3.1](https://r4ds.had.co.nz/r-markdown.html#exercises-72) exercise 3, using [this file](https://raw.githubusercontent.com/hadley/r4ds/master/rmarkdown/diamond-sizes.Rmd)
+    * Section [27.4.7](https://r4ds.had.co.nz/r-markdown.html#exercises-72), exercise 1
