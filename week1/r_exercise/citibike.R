@@ -60,7 +60,8 @@ z
 
 #Method 2
 
-trips %>% distinct(start_station_name, end_station_name)
+union(trips$start_station_name, trips$end_station_name)
+
 
 
 # count the number of trips by gender, the average trip time by gender, and the standard deviation in trip time by gender
@@ -83,6 +84,15 @@ trips %>%
 
   #mutate(station_rank = row_number()) %>%
   #filter(station_rank <= 10)
+
+# Method 2:
+
+trips %>% 
+  group_by(start_station_name, end_station_name) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count)) %>% 
+  ungroup() %>% 
+  slice(1:10)
 
 # find the top 3 end stations for trips starting from each start station
 trips %>%
@@ -119,16 +129,31 @@ trips %>%
 
 
 # compute the average number of trips taken during each of the 24 hours of the day across the entire month
+
 trips %>% 
   mutate(trip_hour = hour(floor_date(trips$starttime,"hour"))) %>% 
   group_by(trip_hour) %>%
   summarize(count = n(),
-    aver_num = count/28) %>% 
+            aver_num = count/28) %>% 
   arrange(desc(aver_num))
+
+
+#Method 2
+
+trips %>% 
+  mutate(trip_hour = hour(starttime),
+         date = floor_date(starttime,'day')) %>% 
+  group_by(date, trip_hour) %>% 
+  summarize(count = n()) %>% 
+  group_by(trip_hour) %>% 
+  summarise(averg = mean(count))
 
 
 # what time(s) of day tend to be peak hour(s)?
 
+# Answers are slightly different due to various ways to get time of the trip taken place.
+
+#Method 1: Count the total number of trips taken during each of the 24 hours of the day across the entire month
 trips %>% 
   mutate(trip_hour = hour(floor_date(trips$starttime,"hour"))) %>% 
   group_by(trip_hour) %>%
@@ -136,11 +161,22 @@ trips %>%
   arrange(desc(count)) %>% 
   slice(1) # peak hour at round 5:00 pm
 
-
+# Method 2: Use the computation done in previouse question to decide the peak hour
 trips %>%
   mutate(hourTime = hour(round_date(starttime, 'hour'))) %>%
   group_by(hourTime) %>% 
   summarise(count = n(), 
             aver_num = count/28) %>% 
   arrange(desc(aver_num))
-    
+  
+# Method 3: 
+
+trips %>% 
+  mutate(trip_hour = hour(starttime),
+         date = floor_date(starttime,'day')) %>% 
+  group_by(date, trip_hour) %>% 
+  summarize(count = n()) %>% 
+  group_by(trip_hour) %>% 
+  summarise(averg = mean(count)) %>% 
+  arrange(desc(averg)) %>% 
+  slice(1)
