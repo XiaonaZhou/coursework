@@ -163,7 +163,7 @@ users <- ratings %>%
 user_with_movie_rank<-left_join(movie_rank,users, by="movie_id")
 
 
-# get cdf for 100% satisfiction 
+# get cdf for 100% satisfaction 
 # note to myself: if you don't understand the code again, use View to see the data at each step
 user_max_rank <- user_with_movie_rank %>% 
   group_by(user_id) %>% 
@@ -172,10 +172,11 @@ user_max_rank <- user_with_movie_rank %>%
   select(user_id, max_rank) %>% 
   group_by(max_rank) %>% 
   summarise(count = n()) %>% 
-  mutate(cdf100 = cumsum(count)/sum(count))
+  mutate(cdf100 = cumsum(count)/sum(count),
+         label = "100% satisfaction")
 
 
-# get cdf for 90% satisfiction 
+# get cdf for 90% satisfaction 
 user_90_rank <- user_with_movie_rank %>% 
   group_by(user_id) %>% 
   summarise(rank_90 = quantile(rank,0.9)) %>%
@@ -183,25 +184,43 @@ user_90_rank <- user_with_movie_rank %>%
   select(user_id, rank_90) %>%
   group_by(rank_90) %>%
   summarise(count = n()) %>%
-  mutate(cdf90 = cumsum(count)/sum(count))
+  mutate(cdf90 = cumsum(count)/sum(count),
+         label = "90% satisfaction")
 
 
+# combine data for plotting
+label <- c(user_max_rank$label, user_90_rank$label)
+y <- c(user_max_rank$cdf100,user_90_rank$cdf90)
+x <- c(user_max_rank$max_rank ,user_90_rank$rank_90)
 
+plot_data <- data.frame(label, x, y)
 
-ggplot(user_max_rank, aes(x=max_rank, y = cdf100))+
-  geom_line() +
+plot_data %>% 
+  group_by(label) %>% 
+  ggplot(aes(x=x, y=y, color = label)) +
+  geom_line()+
   scale_y_continuous(label = percent)+
   scale_x_continuous(label = comma) +
   xlab('Inventory Size') +
-  ylab('Percent of Users Satisfied(100%)')
+  ylab('Percent of Users Satisfied')
 
 
+# plot separate graphs
 
-ggplot(user_90_rank, aes(x=rank_90, y = cdf90))+
-  geom_line() +
-  scale_y_continuous(label = percent)+
-  scale_x_continuous(label = comma) +
-  xlab('Inventory Size') +
-  ylab('Percent of Users Satisfied(90%)')
+# ggplot(user_max_rank, aes(x=max_rank, y = cdf100))+
+#   geom_line() +
+#   scale_y_continuous(label = percent)+
+#   scale_x_continuous(label = comma) +
+#   xlab('Inventory Size') +
+#   ylab('Percent of Users Satisfied(100%)')
+# 
+# 
+# 
+# ggplot(user_90_rank, aes(x=rank_90, y = cdf90))+
+#   geom_line() +
+  # scale_y_continuous(label = percent)+
+  # scale_x_continuous(label = comma) +
+  # xlab('Inventory Size') +
+  # ylab('Percent of Users Satisfied(90%)')
 
 ```
