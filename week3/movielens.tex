@@ -1,0 +1,400 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Movielens},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Movielens}
+\author{}
+\date{\vspace{-2.5em}2020-06-15 15:44:09}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\hypertarget{load-and-preview-data}{%
+\section{Load and preview data}\label{load-and-preview-data}}
+
+Read data from the \texttt{ratings.csv} file
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ratings <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{'ratings.csv'}\NormalTok{,}
+                    \DataTypeTok{col_names =} \KeywordTok{c}\NormalTok{(}\StringTok{'user_id'}\NormalTok{,}\StringTok{'movie_id'}\NormalTok{,}\StringTok{'rating'}\NormalTok{,}\StringTok{'timestamp'}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   user_id = col_double(),
+##   movie_id = col_double(),
+##   rating = col_double(),
+##   timestamp = col_double()
+## )
+\end{verbatim}
+
+Loaded 305.2 Mb of ratings data, containing 10,000,054 ratings. Here's a
+preview:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(ratings) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{kable}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}rrrr@{}}
+\toprule
+user\_id & movie\_id & rating & timestamp\tabularnewline
+\midrule
+\endhead
+1 & 122 & 5 & 838985046\tabularnewline
+1 & 185 & 5 & 838983525\tabularnewline
+1 & 231 & 5 & 838983392\tabularnewline
+1 & 292 & 5 & 838983421\tabularnewline
+1 & 316 & 5 & 838983392\tabularnewline
+1 & 329 & 5 & 838983392\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{summary-statistics}{%
+\section{Summary statistics}\label{summary-statistics}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# plot the distribution of rating values https://speakerdeck.com/jhofman/modeling-social-data-lecture-2-introduction-to-counting?slide=26}
+
+\KeywordTok{ggplot}\NormalTok{(ratings,}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{rating))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{()}\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_continuous}\NormalTok{(}\DataTypeTok{label =}\NormalTok{ comma)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{'Rating'}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{'Number of ratings'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{movielens_files/figure-latex/dist-ratings-1.pdf}
+
+\hypertarget{per-movie-stats}{%
+\subsection{Per-movie stats}\label{per-movie-stats}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# aggregate ratings by movie, computing mean and number of ratings}
+\CommentTok{# hint: use the n() function for easy counting within a group}
+
+\NormalTok{rating_mean_num <-}\StringTok{ }\NormalTok{ratings }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(movie_id) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{num_rating =} \KeywordTok{n}\NormalTok{(),}
+            \DataTypeTok{mean_rating =} \KeywordTok{mean}\NormalTok{(rating))}
+\NormalTok{rating_mean_num}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 10,677 x 3
+##    movie_id num_rating mean_rating
+##       <dbl>      <int>       <dbl>
+##  1        1      26449        3.93
+##  2        2      12032        3.21
+##  3        3       7790        3.15
+##  4        4       1764        2.86
+##  5        5       7135        3.08
+##  6        6      13696        3.81
+##  7        7       8064        3.37
+##  8        8        899        3.13
+##  9        9       2518        3.00
+## 10       10      16918        3.43
+## # ... with 10,667 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# plot distribution of movie popularity (= number of ratings the movie received)}
+\CommentTok{# hint: try scale_x_log10() for a logarithmic x axis}
+
+\NormalTok{rating_mean_num }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ num_rating))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{bins =} \DecValTok{60}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{movielens_files/figure-latex/dist-movie-popularity-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# plot distribution of mean ratings by movie https://speakerdeck.com/jhofman/modeling-social-data-lecture-2-introduction-to-counting?slide=28}
+\CommentTok{# hint: try geom_histogram and geom_density}
+\NormalTok{rating_mean_num }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ mean_rating)) }\OperatorTok{+}
+\StringTok{  }\CommentTok{#geom_histogram() +}
+\StringTok{  }\KeywordTok{geom_density}\NormalTok{(}\DataTypeTok{fill=}\StringTok{"black"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{'Mean Rating by Movie'}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{'Density'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{movielens_files/figure-latex/dist-mean-ratings-by-movie-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# rank movies by popularity and compute the cdf, or fraction of movies covered by the top-k moves https://speakerdeck.com/jhofman/modeling-social-data-lecture-2-introduction-to-counting?slide=30}
+\CommentTok{# hint: use dplyr's rank and arrange functions, and the base R sum and cumsum functions}
+\CommentTok{# store the result in a new data frame so you can use it in creating figure 2 from the paper below}
+
+\CommentTok{# plot the CDF of movie popularity}
+
+\NormalTok{cdf_ratings <-}\StringTok{ }\NormalTok{ratings }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(movie_id) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{num_rating =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(num_rating)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{( }\DataTypeTok{rank =} \KeywordTok{row_number}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{cdf =} \KeywordTok{cumsum}\NormalTok{(num_rating)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(num_rating))}
+
+\KeywordTok{ggplot}\NormalTok{(cdf_ratings, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{rank, }\DataTypeTok{y =}\NormalTok{ cdf))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_continuous}\NormalTok{(}\DataTypeTok{label =}\NormalTok{ percent)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{label =}\NormalTok{ comma) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{'Movie rank'}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{'Cumulative popularity'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{movielens_files/figure-latex/cdf-movie-pop-1.pdf}
+
+\hypertarget{per-user-stats}{%
+\section{Per-user stats}\label{per-user-stats}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# aggregate ratings by user, computing mean and number of ratings}
+
+\NormalTok{user_rating_mean_num <-}\StringTok{ }\NormalTok{ratings }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(user_id) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{num_rating =} \KeywordTok{n}\NormalTok{(),}
+            \DataTypeTok{mean_rating =} \KeywordTok{mean}\NormalTok{(rating))}
+\NormalTok{user_rating_mean_num}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 69,878 x 3
+##    user_id num_rating mean_rating
+##      <dbl>      <int>       <dbl>
+##  1       1         22        5   
+##  2       2         20        3.2 
+##  3       3         33        3.94
+##  4       4         38        4.03
+##  5       5         87        3.85
+##  6       6         42        3.93
+##  7       7        109        3.93
+##  8       8        800        3.40
+##  9       9         24        4   
+## 10      10        123        3.81
+## # ... with 69,868 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{min}\NormalTok{(user_rating_mean_num}\OperatorTok{$}\NormalTok{num_rating)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 20
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# plot distribution of user activity (= number of ratings the user made)}
+\CommentTok{# hint: try a log scale here}
+\NormalTok{user_rating_mean_num }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ num_rating))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{bins =} \DecValTok{60}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{movielens_files/figure-latex/dist-user-activity-1.pdf}
+
+\hypertarget{anatomy-of-the-long-tail}{%
+\section{Anatomy of the long tail}\label{anatomy-of-the-long-tail}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# generate the equivalent of figure 2 of this paper:}
+\CommentTok{# https://5harad.com/papers/long_tail.pdf}
+
+\CommentTok{# Specifically, for the subset of users who rated at least 10 movies,}
+\CommentTok{# produce a plot that shows the fraction of users satisfied (vertical}
+\CommentTok{# axis) as a function of inventory size (horizontal axis). We will}
+\CommentTok{# define "satisfied" as follows: an individual user is satisfied p% of}
+\CommentTok{# the time at inventory of size k if at least p% of the movies they}
+\CommentTok{# rated are contained in the top k most popular movies. As in the}
+\CommentTok{# paper, produce one curve for the 100% user satisfaction level and}
+\CommentTok{# another for 90%---do not, however, bother implementing the null}
+\CommentTok{# model (shown in the dashed lines).}
+
+\NormalTok{movie_rank <-}\StringTok{ }\NormalTok{ratings }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(movie_id) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{num_rating =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(num_rating)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{( }\DataTypeTok{rank =} \KeywordTok{row_number}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(movie_id, rank)}
+
+\NormalTok{users <-}\StringTok{ }\NormalTok{ratings }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(user_id,movie_id)}
+
+\NormalTok{user_with_movie_rank<-}\KeywordTok{left_join}\NormalTok{(movie_rank,users, }\DataTypeTok{by=}\StringTok{"movie_id"}\NormalTok{)}
+
+\NormalTok{user_max_rank <-}\StringTok{ }\NormalTok{user_with_movie_rank }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(user_id) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{max_rank =} \KeywordTok{max}\NormalTok{(rank)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(max_rank) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(user_id, max_rank) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(max_rank) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{count =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{cdf =} \KeywordTok{cumsum}\NormalTok{(count)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(count))}
+\KeywordTok{ggplot}\NormalTok{(user_max_rank, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{max_rank, }\DataTypeTok{y =}\NormalTok{ cdf))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_continuous}\NormalTok{(}\DataTypeTok{label =}\NormalTok{ percent)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{label =}\NormalTok{ comma) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{'Inventory Size'}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{'Percent of Users Satisfied(100%)'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{movielens_files/figure-latex/long-tail-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{user_}\DecValTok{90}\NormalTok{_rank <-}\StringTok{ }\NormalTok{user_with_movie_rank }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(user_id) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{rank_90 =} \KeywordTok{quantile}\NormalTok{(rank,}\FloatTok{0.9}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(rank_}\DecValTok{90}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(user_id, rank_}\DecValTok{90}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(rank_}\DecValTok{90}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{count =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{cdf =} \KeywordTok{cumsum}\NormalTok{(count)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(count))}
+
+
+\KeywordTok{ggplot}\NormalTok{(user_}\DecValTok{90}\NormalTok{_rank, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{rank_}\DecValTok{90}\NormalTok{, }\DataTypeTok{y =}\NormalTok{ cdf))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_continuous}\NormalTok{(}\DataTypeTok{label =}\NormalTok{ percent)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{label =}\NormalTok{ comma) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{'Inventory Size'}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{'Percent of Users Satisfied(90%)'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{movielens_files/figure-latex/long-tail-2.pdf}
+
+\end{document}
