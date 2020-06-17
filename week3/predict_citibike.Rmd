@@ -201,7 +201,6 @@ rsquare(model, validate_data)
 model <- lm(num_trips ~ poly(prcp, 2, raw = T)+ snwd + tmax + tmin + weekday + is_holiday + is_flu_season, train_data)# 0.8976948
 rsquare(model, train_data)
 tidy(model)
-
 # test the model by combine train_data with validate_data
 com_data <- rbind(train_data, validate_data)
 rsquare(model, com_data)
@@ -221,12 +220,60 @@ ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
     ggtitle("Number of trips at different dates"))
 
 
+
 ggplot(plot_data, aes(x=pred, y =num_trips ))+
   geom_point()+
   geom_abline(linetype = "dashed") +
   xlab('Predicted') +
   ylab('Actual')
 ```
+
+
+# Test the model on test set
+
+```{r message=FALSE, warning=FALSE}
+test_data <-  test_data %>% 
+  mutate(weekday = weekdays(as.POSIXct(ymd), abbreviate = T), 
+         month_day = format(ymd,"%m%d"),
+         is_holiday = month_day %in% major_holidays,
+          month = format(ymd,"%m"),
+         is_flu_season = month %in% flu_season) %>% 
+  select(-month,-month_day)
+
+rmse(model, test_data)
+# negative R^2 !!
+rsquare(model, test_data)
+
+
+# plot the test data against prediction
+plot_test_data<- test_data %>% 
+  add_predictions(model)
+ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
+  geom_point(aes(y= num_trips))+
+  geom_line(aes(y=pred), color = "red")+
+  geom_point(aes(y=pred), color = "red") + 
+  geom_smooth() +
+  xlab("Date") +
+  ylab("Predicted (in red)/ Actual (in black)")+
+    ggtitle("Number of trips at different dates"))
+
+# removed the outlier
+plot_data <- test_data %>% 
+  add_predictions(model) %>% 
+  filter(ymd!="2014-04-30")
+#Small error  R^2 = 0.95
+rmse(model, plot_data)
+rsquare(model, plot_data)
+ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
+  geom_point(aes(y= num_trips))+
+  geom_line(aes(y=pred), color = "red")+
+  geom_point(aes(y=pred), color = "red") + 
+  geom_smooth() +
+  xlab("Date") +
+  ylab("Predicted (in red)/ Actual (in black)")+
+    ggtitle("Number of trips at different dates"))
+```
+
 
 
 
