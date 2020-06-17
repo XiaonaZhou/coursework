@@ -160,6 +160,8 @@ Plot the total counts for each year over time, from 1850 to 2012. Use the `comma
 ggplot(total_counts, aes(x = year, y = total_volume)) + 
   geom_line()+
   scale_y_continuous(label = comma)+
+  xlab("Year")+
+  ylab("Total Volume")+
   ggtitle("Year VS Total volume")
 
 
@@ -231,18 +233,23 @@ Plot the half-life of each term over time from 1850 to 2012. Each point should r
 ```{r plot-half-lifes, message=FALSE, warning=FALSE}
 ggplotly(ggplot(half_life_year, aes(x = term, y = half_year)) +
   geom_point()+
-    #xlim(c(1875, 1975))+
+    xlim(c(1875, 1975))+
     geom_smooth() )
 
-half_life_year %>% 
-  filter(half_year== min(half_year))
-half_life_year[half_life_year$half_year==min(half_life_year$half_year),1]
-half_life_year[half_life_year$half_year==max(half_life_year$half_year),1]
+
+outlier_data <- half_life_year %>% 
+  filter(term>=1875 & term <=1975)
+
+fast <- outlier_data %>% filter(half_year== min(half_year)) %>% select(term)
+slow <- outlier_data %>% filter(half_year== max(half_year)) %>% select(term)
+slow
+fast
+# half_life_year[half_life_year$half_year==min(half_life_year$half_year),1]
+# half_life_year[half_life_year$half_year==max(half_life_year$half_year),1]
 ```
 
 ## Your written answer
-
-Write up your answer to Part F here.
+The version 2 of the NGram dats produce different results to those presented in Michel et al. (2011). The graph on the paper showed an overall downward slope, which supported their claim that people forget things quicker and quicker. However, the graph produced by version 2 of the NGrame data has an upward slope and the curve flatten out after term 1825. 
 
 # Part G
 
@@ -250,7 +257,7 @@ Write up your answer to Part F here.
 
 ## Your written answer
 
-Write up your answer to Part G here. Include code that shows the years with the smallest and largest half-lifes.`r half_life_year`
+Most of the terms have half life of 10 years. The term that were forgotten particularly slow is 1900, and the terms that were forgotten particularly quick is 1877,1878,1942. I think that people remebered 1900 longer than other term is because of all the important events happened that year. We can see that by comparing [Wiki page for 1900](https://en.wikipedia.org/wiki/1900) to [Wiki page for 1877](https://en.wikipedia.org/wiki/1877). I considerd points that are far way from half life od ten year as an outlier.
 
 # Makefile
 

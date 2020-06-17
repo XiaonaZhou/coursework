@@ -1,0 +1,238 @@
+---
+title: "Predicting daily Citibike trips (open-ended)"
+author: "Xiaona Zhou"
+date: "6/17/2020"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '3'
+  pdf_document:
+    toc: yes
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+library(here)
+library(scales)
+library(tidyverse)
+library(plotly)
+library(caTools)
+library(lubridate)
+library(broom)
+library(modelr)
+theme_set(theme_bw())
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load data
+
+```{r message=FALSE, warning=FALSE}
+trips_per_day <- read_tsv("trips_per_day.tsv")
+```
+
+## Split the data into different sets
+
+```{r}
+set.seed(42)
+# sample split using caTools package
+sample <- sample.split(trips_per_day$num_trips, SplitRatio = 0.8)
+train_data <- subset(trips_per_day, sample== T)
+other_data <- subset(trips_per_day, sample== F)
+sample2 <- sample.split(other_data$num_trips, SplitRatio = 0.5)
+validate_data <- subset(other_data, sample2== T)
+test_data <- subset(other_data, sample2== F)
+# Check if the split works
+nrow(trips_per_day)==sum(nrow(train_data), nrow(test_data), nrow(validate_data))
+```
+
+## Modeling with only minimum tempurature as predictor
+
+```{r}
+K <- 1:8
+train_err <- c()
+validate_err <- c()
+for (k in K){
+  # fit on the training data
+  model <- lm(num_trips ~ poly(tmin, k, raw = T), train_data)
+  
+  # evaluate on the training data
+  # RMSE-> root mean square error. sqrt( (predict-truth)^2 /number of data )
+  train_err[k] <- sqrt(mean((predict(model, train_data)-train_data$num_trips)^2))
+  validate_err[k] <- sqrt(mean((predict(model, validate_data ) - validate_data$num_trips)^2))
+}
+
+plot_data <- data.frame(K, train_err, validate_err) %>% 
+  gather("split","error",-K)
+
+ggplot(plot_data, aes(x=K, y = error, color = split)) +
+  geom_line() +
+  scale_x_continuous(breaks = K) +
+  xlab('Polynomial Degrees') +
+  ylab('RMSE')
+```
+
+
+## Consider other predictors to improve the model
+
+* add weekdays as another predictor
+
+```{r}
+train_data <- train_data %>% 
+  mutate(weekday = weekdays(as.POSIXct(ymd), abbreviate = T))
+validate_data<- validate_data %>% 
+  mutate(weekday = weekdays(as.POSIXct(ymd), abbreviate = T))
+
+#Check if weekdays increases R^2 for the value
+model <- lm(num_trips ~. , train_data)
+glance(model)
+
+```
+
+
+* add whether is a major holiday as a predictor
+
+```{r}
+major_holidays <- c("0101", "0120", "0214", "0217", "0526", "0704", "0901", "1013", "1127", "1224", "1225","1231")
+
+train_data <- train_data %>% 
+  mutate(month_day = format(train_data$ymd,"%m%d"),
+         is_holiday = month_day %in% major_holidays) %>% 
+  select(-month_day)
+
+validate_data <- validate_data %>% 
+  mutate(month_day = format(validate_data$ymd,"%m%d"),
+         is_holiday = month_day %in% major_holidays) %>% 
+  select(-month_day)
+
+#Check if is_holiday increases R^2 for the value
+model <- lm(num_trips ~. , train_data) 
+glance(model)
+
+```
+
+*  add is_flu_season as a predictor
+
+
+```{r}
+flu_season <- c("12", "01", "02")
+train_data <- train_data %>% 
+  mutate(month = format(ymd,"%m"),
+         is_flu_season = month %in% flu_season) %>% 
+  select(-month)
+
+validate_data <- validate_data %>%  mutate(month = format(ymd,"%m"),
+         is_flu_season = month %in% flu_season) %>% 
+  select(-month)
+
+model <- lm(num_trips ~. -ymd -date -snow, train_data) 
+glance(model)
+
+```
+
+
+## Cross-Validation
+
+```{r}
+
+# fit a model for each polynomial degree consider 7 predictors
+K <- 1:8
+train_err <- c()
+validate_err <- c()
+for (k in K){
+  # fit on the training data
+  model <- lm(num_trips ~ poly(prcp, k, raw = T) + poly(snwd, k, raw = T) + poly(tmax, k, raw = T) + poly(tmin, k, raw = T) + weekday + is_holiday + is_flu_season, train_data)
+  
+  # evaluate on the training data
+  # RMSE-> root mean square error. sqrt( (predict-truth)^2 /number of data )
+  train_err[k] <- sqrt(mean((predict(model, train_data)-train_data$num_trips)^2))
+  validate_err[k] <- sqrt(mean((predict(model, validate_data ) - validate_data$num_trips)^2))
+}
+
+plot_data <- data.frame(K, train_err, validate_err) %>% 
+  gather("split","error",-K)
+
+ggplot(plot_data, aes(x=K, y = error, color = split)) +
+  geom_line() +
+  scale_x_continuous(breaks = K) +
+  xlab('Polynomial Degrees') +
+  ylab('RMSE')
+```
+
+Polynomial of Degree two gives lowest validation error. Further investigation still nedded. 
+
+## Further defined the model at polynomial of degree two 
+
+
+```{r}
+
+# Everything at degree 2
+model <- lm(num_trips ~ poly(prcp, 2, raw = T)+poly(snwd, 2, raw = T)+poly(tmax, 2, raw = T)+poly(tmin, 2, raw = T) + weekday + is_holiday + is_flu_season, train_data)
+glance(model)
+
+
+
+# take out insignificant predictors
+model <- lm(num_trips ~ poly(prcp, 2, raw = T)+ snwd + poly(tmax, 2, raw = T)+poly(tmin, 2, raw = T) + weekday + is_holiday + is_flu_season, train_data)
+
+# check R^2
+rsquare(model, train_data)
+rsquare(model, validate_data)
+
+
+
+# take out more insignificant predictors
+model <- lm(num_trips ~ poly(prcp, 2, raw = T)+ snwd + tmax + tmin + weekday + is_holiday + is_flu_season, train_data)
+
+#Check rmse and R^2 
+rmse(model, train_data)
+rmse(model, validate_data)
+rsquare(model, train_data)
+rsquare(model, validate_data)
+
+
+```
+
+# Best model
+
+```{r message=FALSE, warning=FALSE}
+# Best Model
+model <- lm(num_trips ~ poly(prcp, 2, raw = T)+ snwd + tmax + tmin + weekday + is_holiday + is_flu_season, train_data)# 0.8976948
+rsquare(model, train_data)
+tidy(model)
+
+# test the model by combine train_data with validate_data
+com_data <- rbind(train_data, validate_data)
+rsquare(model, com_data)
+
+
+
+plot_data <- validate_data %>%
+  add_predictions(model)
+
+ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
+  geom_point(aes(y= num_trips))+
+  geom_line(aes(y=pred), color = "red")+
+  geom_point(aes(y=pred), color = "red") + 
+  geom_smooth() +
+  xlab("Date") +
+  ylab("Predicted (in red)/ Actual (in black)")+
+    ggtitle("Number of trips at different dates"))
+
+
+ggplot(plot_data, aes(x=pred, y =num_trips ))+
+  geom_point()+
+  geom_abline(linetype = "dashed") +
+  xlab('Predicted') +
+  ylab('Actual')
+```
+
+
+
+
+
+
+
+
+
