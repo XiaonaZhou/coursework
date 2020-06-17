@@ -209,15 +209,24 @@ rsquare(model, com_data)
 
 plot_data <- validate_data %>%
   add_predictions(model)
+# use ggplotly for interactive plot
+# ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
+#   geom_point(aes(y= num_trips))+
+#   geom_line(aes(y=pred), color = "red")+
+#   geom_point(aes(y=pred), color = "red") + 
+#   geom_smooth() +
+#   xlab("Date") +
+#   ylab("Predicted (in red)/ Actual (in black)")+
+#     ggtitle("Number of trips at different dates"))
 
-ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
+ggplot(plot_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
   geom_point(aes(y=pred), color = "red") + 
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates"))
+    ggtitle("Number of trips at different dates")
 
 
 
@@ -248,14 +257,24 @@ rsquare(model, test_data)
 # plot the test data against prediction
 plot_test_data<- test_data %>% 
   add_predictions(model)
-ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
+# ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
+#   geom_point(aes(y= num_trips))+
+#   geom_line(aes(y=pred), color = "red")+
+#   geom_point(aes(y=pred), color = "red") + 
+#   geom_smooth() +
+#   xlab("Date") +
+#   ylab("Predicted (in red)/ Actual (in black)")+
+#     ggtitle("Number of trips at different dates"))
+
+
+ggplot(plot_test_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
   geom_point(aes(y=pred), color = "red") + 
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates"))
+    ggtitle("Number of trips at different dates")
 
 # removed the outlier
 plot_data <- test_data %>% 
@@ -264,14 +283,24 @@ plot_data <- test_data %>%
 #Small error  R^2 = 0.95
 rmse(model, plot_data)
 rsquare(model, plot_data)
-ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
+# ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
+#   geom_point(aes(y= num_trips))+
+#   geom_line(aes(y=pred), color = "red")+
+#   geom_point(aes(y=pred), color = "red") + 
+#   geom_smooth() +
+#   xlab("Date") +
+#   ylab("Predicted (in red)/ Actual (in black)")+
+#     ggtitle("Number of trips at different dates"))
+
+
+ggplot(plot_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
-  geom_point(aes(y=pred), color = "red") + 
+  geom_point(aes(y=pred), color = "red") +
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates"))
+    ggtitle("Number of trips at different dates")
 ```
 
 
