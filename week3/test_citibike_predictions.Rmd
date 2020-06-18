@@ -48,21 +48,22 @@ trips_per_day_2015 <- trips_per_day_2015 %>%
   rename(num_trips = trip_num)
 trips_per_day_2015$tmin <-trips_per_day_2015$tmin/10
 trips_per_day_2015$tmax <-trips_per_day_2015$tmax/10
-rsquare(model, trips_per_day_2015)
+test_R_square <- rsquare(model, trips_per_day_2015)
+test_R_square
 rmse(model, trips_per_day_2015)
 
 plot_test_data<- trips_per_day_2015 %>% 
   add_predictions(model)
 
 
-ggplot(plot_test_data, aes(x= ymd, y = pred))+
+ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
   geom_point(aes(y=pred), color = "red") +
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates")
+    ggtitle("Number of trips at different dates"))
 
 
 ggplot(plot_test_data, aes(x=pred, y =num_trips ))+
@@ -72,6 +73,8 @@ ggplot(plot_test_data, aes(x=pred, y =num_trips ))+
   ylab('Actual')
 ```
 
+
+Number of trips in mid-September through early November were unusually high compare to 2014. This explains why the R^2 is `r test_R_square` when fitting the model to 2015 data. 
 
 
 
@@ -83,14 +86,14 @@ plot_train_data <- plot_train_data %>%
   add_predictions(model) %>% 
   filter(ymd!="2014-04-30")
 
-ggplot(plot_train_data, aes(x= ymd, y = pred))+
+ggplotly(ggplot(plot_train_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
   geom_point(aes(y=pred), color = "red") +
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates")
+    ggtitle("Number of trips at different dates"))
 
 
 ggplot(plot_train_data, aes(x=pred, y =num_trips ))+
