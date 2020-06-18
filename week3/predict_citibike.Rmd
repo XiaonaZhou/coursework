@@ -303,7 +303,7 @@ ggplot(plot_data, aes(x= ymd, y = pred))+
     ggtitle("Number of trips at different dates")
 ```
 
-
+#### I'm expecting my model to produce R^2 around 0.89 on a new data set with a rmse around 3000.
 
 
 
