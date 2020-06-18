@@ -94,21 +94,24 @@ glance(model)
 * add whether is a major holiday as a predictor
 
 ```{r}
+
 major_holidays <- c("0101", "0120", "0214", "0217", "0526", "0704", "0901", "1013", "1127", "1224", "1225","1231")
 
-train_data <- train_data %>% 
+train_data <- train_data %>%
   mutate(month_day = format(train_data$ymd,"%m%d"),
-         is_holiday = month_day %in% major_holidays) %>% 
+         is_holiday = month_day %in% major_holidays) %>%
   select(-month_day)
 
-validate_data <- validate_data %>% 
+validate_data <- validate_data %>%
   mutate(month_day = format(validate_data$ymd,"%m%d"),
-         is_holiday = month_day %in% major_holidays) %>% 
+         is_holiday = month_day %in% major_holidays) %>%
   select(-month_day)
 
 #Check if is_holiday increases R^2 for the value
-model <- lm(num_trips ~. , train_data) 
+model <- lm(num_trips ~. , train_data)
 glance(model)
+
+  
 
 ```
 
@@ -210,23 +213,15 @@ rsquare(model, com_data)
 plot_data <- validate_data %>%
   add_predictions(model)
 # use ggplotly for interactive plot
-# ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
-#   geom_point(aes(y= num_trips))+
-#   geom_line(aes(y=pred), color = "red")+
-#   geom_point(aes(y=pred), color = "red") + 
-#   geom_smooth() +
-#   xlab("Date") +
-#   ylab("Predicted (in red)/ Actual (in black)")+
-#     ggtitle("Number of trips at different dates"))
-
-ggplot(plot_data, aes(x= ymd, y = pred))+
+ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
-  geom_point(aes(y=pred), color = "red") + 
+  geom_point(aes(y=pred), color = "red") +
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates")
+    ggtitle("Number of trips at different dates"))
+
 
 
 
@@ -241,6 +236,7 @@ ggplot(plot_data, aes(x=pred, y =num_trips ))+
 # Test the model on test set
 
 ```{r message=FALSE, warning=FALSE}
+
 test_data <-  test_data %>% 
   mutate(weekday = weekdays(as.POSIXct(ymd), abbreviate = T), 
          month_day = format(ymd,"%m%d"),
@@ -257,24 +253,14 @@ rsquare(model, test_data)
 # plot the test data against prediction
 plot_test_data<- test_data %>% 
   add_predictions(model)
-# ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
-#   geom_point(aes(y= num_trips))+
-#   geom_line(aes(y=pred), color = "red")+
-#   geom_point(aes(y=pred), color = "red") + 
-#   geom_smooth() +
-#   xlab("Date") +
-#   ylab("Predicted (in red)/ Actual (in black)")+
-#     ggtitle("Number of trips at different dates"))
-
-
-ggplot(plot_test_data, aes(x= ymd, y = pred))+
+ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
-  geom_point(aes(y=pred), color = "red") + 
+  geom_point(aes(y=pred), color = "red") +
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates")
+    ggtitle("Number of trips at different dates"))
 
 # removed the outlier
 plot_data <- test_data %>% 
@@ -283,24 +269,16 @@ plot_data <- test_data %>%
 #Small error  R^2 = 0.95
 rmse(model, plot_data)
 rsquare(model, plot_data)
-# ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
-#   geom_point(aes(y= num_trips))+
-#   geom_line(aes(y=pred), color = "red")+
-#   geom_point(aes(y=pred), color = "red") + 
-#   geom_smooth() +
-#   xlab("Date") +
-#   ylab("Predicted (in red)/ Actual (in black)")+
-#     ggtitle("Number of trips at different dates"))
-
-
-ggplot(plot_data, aes(x= ymd, y = pred))+
+ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
   geom_point(aes(y=pred), color = "red") +
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates")
+    ggtitle("Number of trips at different dates"))
+
+
 ```
 
 #### I'm expecting my model to produce R^2 around 0.89 on a new data set with a rmse around 3000.
