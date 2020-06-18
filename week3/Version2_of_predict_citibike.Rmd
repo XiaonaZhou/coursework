@@ -48,6 +48,7 @@ trips_per_day <- trips_per_day %>%
 #add weekdays as another predictor
 trips_per_day <- trips_per_day %>% 
   mutate(weekday = weekdays(as.POSIXct(ymd), abbreviate = T))
+
 # add flu_season as another predictor
 flu_season <- c("12", "01", "02")
 trips_per_day <- trips_per_day %>% 
@@ -182,23 +183,14 @@ rsquare(model, com_data)
 plot_data <- validate_data %>%
   add_predictions(model)
 # use ggplotly for interactive plot
-# ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
-#   geom_point(aes(y= num_trips))+
-#   geom_line(aes(y=pred), color = "red")+
-#   geom_point(aes(y=pred), color = "red") + 
-#   geom_smooth() +
-#   xlab("Date") +
-#   ylab("Predicted (in red)/ Actual (in black)")+
-#     ggtitle("Number of trips at different dates"))
-
-ggplot(plot_data, aes(x= ymd, y = pred))+
+ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
-  geom_point(aes(y=pred), color = "red") + 
+  geom_point(aes(y=pred), color = "red") +
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates")
+    ggtitle("Number of trips at different dates"))
 
 
 
@@ -206,7 +198,9 @@ ggplot(plot_data, aes(x=pred, y =num_trips ))+
   geom_point()+
   geom_abline(linetype = "dashed") +
   xlab('Predicted') +
-  ylab('Actual')
+  ylab('Actual')+
+  ggtitle("Predicted Value against Actual Value ")
+
 ```
 
 
@@ -223,24 +217,17 @@ rsquare(model, test_data)
 # add predictions to test data
 plot_test_data<- test_data %>% 
   add_predictions(model)
-# ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
-#   geom_point(aes(y= num_trips))+
-#   geom_line(aes(y=pred), color = "red")+
-#   geom_point(aes(y=pred), color = "red") + 
-#   geom_smooth() +
-#   xlab("Date") +
-#   ylab("Predicted (in red)/ Actual (in black)")+
-#     ggtitle("Number of trips at different dates"))
 
 # plot ymd versus prediction and actual value
-ggplot(plot_test_data, aes(x= ymd, y = pred))+
+ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
-  geom_point(aes(y=pred), color = "red") + 
+  geom_point(aes(y=pred), color = "red") +
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates")
+    ggtitle("Number of trips at different dates"))
+
 
 # removed the outlier
 plot_data <- test_data %>% 
@@ -249,24 +236,18 @@ plot_data <- test_data %>%
 #Small error  R^2 = 0.95
 rmse(model, plot_data)
 rsquare(model, plot_data)
-# ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
-#   geom_point(aes(y= num_trips))+
-#   geom_line(aes(y=pred), color = "red")+
-#   geom_point(aes(y=pred), color = "red") + 
-#   geom_smooth() +
-#   xlab("Date") +
-#   ylab("Predicted (in red)/ Actual (in black)")+
-#     ggtitle("Number of trips at different dates"))
 
 
-ggplot(plot_data, aes(x= ymd, y = pred))+
+ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
   geom_line(aes(y=pred), color = "red")+
   geom_point(aes(y=pred), color = "red") +
   geom_smooth() +
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
-    ggtitle("Number of trips at different dates")
+    ggtitle("Number of trips at different dates"))
+
+
 ```
 
 #### I'm expecting my model to produce R^2 around 0.89 on a new data set with a rmse around 3000.
