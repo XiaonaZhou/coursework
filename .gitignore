@@ -8,3 +8,5 @@
 *.tsv
 *.RData
 *.dat
+*.tex
+*.PNG
