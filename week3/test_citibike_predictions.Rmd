@@ -1,5 +1,5 @@
 ---
-title: "test_citibike_predictions"
+title: "Test citibike predictions"
 author: "Xiaona Zhou"
 date: "6/18/2020"
 output:
@@ -22,22 +22,23 @@ library(broom)
 library(modelr)
 theme_set(theme_bw())
 
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
 ```
 
 
-## Test the model on data from 2015
+# Test the model on data from 2015
 
 
-Load .RData 
-```{r}
-load('.RData')
-load('trips_2015.RData')
-```
-
-
+## Load and clean the data
 
 ```{r message=FALSE, warning=FALSE}
+#Load .RData 
+load('.RData')
+load('trips_2015.RData')
 
 # clean 2015 data and add other predictors
 trips_per_day_2015 <- trips_per_day_2015 %>%
@@ -53,15 +54,23 @@ trips_per_day_2015 <- trips_per_day_2015 %>%
 trips_per_day_2015$tmin <-trips_per_day_2015$tmin/10
 trips_per_day_2015$tmax <-trips_per_day_2015$tmax/10
 
-# calculate R^2 of 2015 data
+```
+
+
+## Calculate $R^2$ and MSE
+$R^2$ is 0.72, which is much lower than what was expected.
+
+```{r}
 test_R_square <- rsquare(model, trips_per_day_2015)
 test_R_square
 rmse(model, trips_per_day_2015)
+```
 
-# add predictions to the data
+##  Add predictions to the data and plot actual and predicted values
+```{r}
+#Add predictions 
 plot_test_data<- trips_per_day_2015 %>% 
   add_predictions(model)
-
 
 ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
   geom_point(aes(y= num_trips))+
@@ -71,15 +80,18 @@ ggplotly(ggplot(plot_test_data, aes(x= ymd, y = pred))+
   xlab("Date") +
   ylab("Predicted (in red)/ Actual (in black)")+
     ggtitle("Number of trips at different dates"))
+```
 
 
+## Plot actual value against predicted value
+
+```{r message=FALSE, warning=FALSE}
 ggplot(plot_test_data, aes(x=pred, y =num_trips ))+
   geom_point()+
   geom_abline(linetype = "dashed") +
   xlab('Predicted') +
   ylab('Actual')
 ```
-
 
 Number of trips in mid-September through early November were unusually high compare to 2014. This explains why the R^2 is `r test_R_square` when fitting the model to 2015 data. 
 
@@ -89,7 +101,6 @@ Number of trips in mid-September through early November were unusually high comp
 
 ```{r message=FALSE, warning=FALSE}
 # plot_train_data contains data clean data from 2014
-
 plot_train_data<- rbind(train_data,validate_data, test_data)
 plot_train_data <- plot_train_data %>% 
   add_predictions(model) %>% 
@@ -127,4 +138,4 @@ rmse(model, plot_train_data)
 ```
 
 
-My model performed much worse than what I expected. Number of trips in 2015 had a different trend compare to 2014's. There are many unexpected factors that may have great impact on the number of trips, such as social media trends, unexpected severe weather conditions, promotions on healthy life styles. When running the 2015 data, I first got negative R^2. I checked the data and found tmin and tmax were much larger than 2014. Krushang told me that those values were divided by 10 in year 2014. Other than that, I did not face much difficulty when running the model on 2015 data and Krushang's code. Everything went smoothly. Still waiting for Basira's code. 
+My model performed much worse than what I expected. Number of trips in 2015 had a different trend compare to 2014's. There are many unexpected factors that may have great impact on the number of trips, such as social media trends, unexpected severe weather conditions, promotions on healthy life styles. When running the 2015 data, I first got negative R^2. I checked the data and found tmin and tmax were much larger than 2014. Krushang told me that those values were divided by 10 in year 2014. Other than that, I did not face much difficulty when running the model on 2015 data and Krushang's code and Basira's code. Everything went smoothly. 
