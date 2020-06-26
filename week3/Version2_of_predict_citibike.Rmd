@@ -38,6 +38,7 @@ holiday$ymd <- as.Date(holiday$ymd)
 ```
 
 ## Adding new predictors
+Added is_holiday, day of a week, and is_flu_season as new predictors.
 ```{r}
 # join holiday info to trips_per_day and add is_holiday_column
 trips_per_day <- trips_per_day %>%
@@ -167,6 +168,8 @@ rsquare(model, validate_data)
 
 # Best model
 
+$y = a_1prcp+a_2prcp^2+a_3snwd +a_4tmax +a_5tmin+a_6weekday + a_7 is_holiday +a_8 is_flu_season$
+
 ```{r message=FALSE, warning=FALSE}
 # Best Model
 model <- lm(num_trips ~ poly(prcp, 2, raw = T)+ snwd + tmax + tmin + weekday + is_holiday + is_flu_season, train_data)# 0.8976948
@@ -250,6 +253,6 @@ ggplotly(ggplot(plot_data, aes(x= ymd, y = pred))+
 
 ```
 
-#### I'm expecting my model to produce R^2 around 0.89 on a new data set with a rmse around 3000.
+I'm expecting my model to produce R^2 around 0.89 on a new data set with a rmse around 3000.
 
 
