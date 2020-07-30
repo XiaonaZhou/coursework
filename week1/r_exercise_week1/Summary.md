@@ -1,0 +1,3 @@
+This folder contains 
+1. exercises from R for data science 
+2. plot_trips.R: practice for .... 
