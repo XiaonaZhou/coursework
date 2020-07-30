@@ -3,15 +3,15 @@ This week covers several assignments on reproducing the results of published res
 # Day 1
 
 ## The long tail
+[My Answer](https://rawcdn.githack.com/XiaonaZhou/coursework/65d769c2de3a8a80c41b678e6f16c2e04022fb3f/week3/movielens.html)
 
 * Take a look at [The Anatomy of the Long Tail](https://5harad.com/papers/long_tail.pdf) and think about how to generate Figures 1 and 2 (you can ignore the null model in Figure 2)
 * Use the [download_movielens.sh](download_movielens.sh) script to download the [MovieLens data](http://grouplens.org/datasets/movielens/)
-* Fill in code in the [movielens.Rmd](movielens.Rmd) file to reproduce plots from lecture slides and Figures 1 and 2 from the paper
-
+* Fill in code in the [movielens.Rmd](movielens.Rmd) file to reproduce plots from lecture slides and Figures 1 and 2 from the paper 
 # Day 2
 
 ## N-gram data and "Culturonomics"
-
+[My Answer](https://rawcdn.githack.com/XiaonaZhou/coursework/2459c5a5409d5b49c1b7f5d21c95f177c1a5cb18/week3/ngrams/05_final_report.html)
 * Replicate and extend the results of the [Google n-grams "culturomics" paper](https://science.sciencemag.org/content/331/6014/176) using the template [here](ngrams/)
 * Consider the last bit of this exercise on creating a Makefile "extra credit", here are some references for using GNU Make / Makefiles:
   * [Why Use Make?](https://bost.ocks.org/mike/make/) by Mike Bostock
@@ -20,6 +20,7 @@ This week covers several assignments on reproducing the results of published res
 # Day 3
 
 ## Predicting daily Citibike trips (open-ended)
+[My Answer](https://rawcdn.githack.com/XiaonaZhou/coursework/65d769c2de3a8a80c41b678e6f16c2e04022fb3f/week3/Version2_of_predict_citibike.html)
 
 The point of this exercise is to get experience in an open-ended prediction exercise: predicting the total number of Citibike trips taken on a given day. Do all of your work in an RMarkdown file named `predict_citibike.Rmd`. Here are the rules of the game:
 
@@ -36,6 +37,7 @@ The point of this exercise is to get experience in an open-ended prediction exer
 # Day 4
 
 ## Testing your Citibike models
+[My_Prediction](https://rawcdn.githack.com/XiaonaZhou/coursework/65d769c2de3a8a80c41b678e6f16c2e04022fb3f/week3/test_citibike_predictions.html)
 
 Now you're going to test the model you developed yesterday using trips from 2014 with data from 2015.
 
@@ -47,6 +49,9 @@ Now you're going to test the model you developed yesterday using trips from 2014
 6. Write up any thoughts you have about this exercise in your Rmarkdown file, ranging from how the model performed in 2014 vs. 2015, challenges you faced in running it on new data, or issues that came up in running each other's code. Commit and push the file to Github when you're done.
 
 ## Thinking about experiments
+[Coffee and Cancer](https://rawcdn.githack.com/XiaonaZhou/coursework/65d769c2de3a8a80c41b678e6f16c2e04022fb3f/week3/coffee_and_cancer.html)
+
+[Is Yawning Contagious](https://rawcdn.githack.com/XiaonaZhou/coursework/65d769c2de3a8a80c41b678e6f16c2e04022fb3f/week3/Is_Yawning_Contagious.html)
 
 These two exercises take a look at two questions and how they might be answered by randomized experiments. Use the Rmarkdown files in each directory as a template for your solution.
 
