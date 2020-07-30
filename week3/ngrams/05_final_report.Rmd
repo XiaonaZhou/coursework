@@ -1,6 +1,6 @@
 ---
 title: "MSD Homework 2, Problem 3"
-author: "Your Name (your uni)"
+author: "Xiaona Zhou"
 date: "`r Sys.time()`"
 output:
   html_document:
@@ -244,12 +244,12 @@ fast <- outlier_data %>% filter(half_year== min(half_year)) %>% select(term)
 slow <- outlier_data %>% filter(half_year== max(half_year)) %>% select(term)
 slow
 fast
-# half_life_year[half_life_year$half_year==min(half_life_year$half_year),1]
+#half_life_year[half_life_year$half_year==min(half_life_year$half_year),1]
 # half_life_year[half_life_year$half_year==max(half_life_year$half_year),1]
 ```
 
 ## Your written answer
-The version 2 of the NGram dats produce different results to those presented in Michel et al. (2011). The graph on the paper showed an overall downward slope, which supported their claim that people forget things quicker and quicker. However, the graph produced by version 2 of the NGrame data has an upward slope and the curve flatten out after term 1825. 
+The version 2 of the NGram datas produce different results to those presented in Michel et al. (2011). The graph on the paper showed an overall downward slope, which supported their claim that people forget things quicker and quicker. However, the graph produced by version 2 of the NGrame data has an upward slope and the curve flatten out after term 1825. 
 
 # Part G
 
@@ -257,7 +257,7 @@ The version 2 of the NGram dats produce different results to those presented in 
 
 ## Your written answer
 
-Most of the terms have half life of 10 years. The term that were forgotten particularly slow is 1900, and the terms that were forgotten particularly quick is 1877,1878,1942. I think that people remebered 1900 longer than other term is because of all the important events happened that year. We can see that by comparing [Wiki page for 1900](https://en.wikipedia.org/wiki/1900) to [Wiki page for 1877](https://en.wikipedia.org/wiki/1877). I considerd points that are far way from half life od ten year as an outlier.
+Most of the terms have half life of 10 years. The term that were forgotten particularly slow is `r as.numeric(fast$term)`, and the terms that were forgotten particularly quick is`r as.numeric(slow)`. I think that people remembered 1900 longer than other term is because of all the important events happened that year. We can see that by comparing [Wiki page for 1900](https://en.wikipedia.org/wiki/1900) to [Wiki page for 1877](https://en.wikipedia.org/wiki/1877). I considered points that are far way from half life of ten year as an outliers.
 
 # Makefile
 
