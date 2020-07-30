@@ -131,45 +131,38 @@ trips %>%
 # plot weather data
 ########################################
 # plot the minimum temperature (on the y axis) over each day (on the x axis)
-<<<<<<< HEAD
+
 
 # use date as x-axis
-=======
->>>>>>> e88c73595935204d3494bfbd198ddc92e7961090
+
 weather %>% 
   ggplot(aes(y = tmin, x = date)) +
   geom_line()
 
-<<<<<<< HEAD
 # use ymd as x-axis
 weather %>% 
   ggplot(aes(y = tmin, x = ymd)) +
   geom_line()
-=======
-
->>>>>>> e88c73595935204d3494bfbd198ddc92e7961090
 
 # plot the minimum temperature and maximum temperature (on the y axis, with different colors) over each day (on the x axis)
 # hint: try using the gather() function for this to reshape things before plotting
 # (you can skip this and come back to it tomorrow if we haven't covered gather() yet)
-<<<<<<< HEAD
+
 
 # use date as x-axis
-=======
->>>>>>> e88c73595935204d3494bfbd198ddc92e7961090
+
 weather %>% 
   gather(temperature, value, tmin, tmax) %>% 
   ggplot(aes(x = date, y = value, colour = temperature)) +
   geom_point()
 
-<<<<<<< HEAD
+
 # use ymd as x-axis
 weather %>% 
   gather(temperature, value, tmin, tmax) %>% 
   ggplot(aes(x = ymd, y = value, colour = temperature)) +
   geom_point()
-=======
->>>>>>> e88c73595935204d3494bfbd198ddc92e7961090
+
 
 ########################################
 # plot trip and weather data
