@@ -1,3 +1,5 @@
+Link to my final_report.Rmd: [Final Report](https://rawcdn.githack.com/XiaonaZhou/coursework/2459c5a5409d5b49c1b7f5d21c95f177c1a5cb18/week3/ngrams/05_final_report.html)
+
 ### 3. Culturomics
 
 #### Problem statement
